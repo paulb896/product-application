@@ -1,0 +1,22 @@
+{
+  "name": "search-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "Skipping build step for now",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.5.0",
+    "apollo-server": "2.9.14",
+    "graphql": "14.5.8"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.2"
+  }
+}

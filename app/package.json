@@ -1,0 +1,15 @@
+{
+  "name": "example-hello-world",
+  "dependencies": {
+    "@nuxtjs/apollo": "^4.0.0-rc19",
+    "nuxt": "latest",
+    "nuxt-generate-cluster": "^2.6.0"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt",
+    "generate": "nuxt-generate -w 4",
+    "post-update": "yarn upgrade --latest",
+    "start": "nuxt start"
+  }
+}

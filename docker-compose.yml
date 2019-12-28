@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  elasticsearch:
+    # build: ./elasticsearch/
+    # image: 'bitnami/elasticsearch:latest'
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    environment:
+      - node.name=elasticsearch
+      # - discovery.seed_hosts=elasticsearch
+      # - cluster.name=docker-cluster
+      # - bootstrap.memory_lock=true
+      - cluster.initial_master_nodes=elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTICSEARCH_PORT_NUMBER=9200
+      # Invalid kernel settings. Elasticsearch requires at least: vm.max_map_count = 262144
+    ports:
+      - "9200:9200"
+
+  search_api:
+    build: ./search_api/
+    environment:
+      - ELASTIC_SEARCH_URL=http://elasticsearch:9200
+    restart: always
+    ports:
+      - "4000:4000"
+    command:
+      "npm run start"
+    depends_on:
+      - elasticsearch
+
+  nuxt:
+    build: ./app/
+    container_name: app-website
+    environment:
+      - SERVER_SEARCH_URL=http://search_api:4000
+    restart: always
+    # ports:
+    #   - "3333:3333"
+    command:
+      "npm run start"
+    depends_on:
+      - search_api
+
+  nginx:
+    image: nginx:1.13
+    container_name: real-time-news-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - nuxt

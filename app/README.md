@@ -1,3 +1,18 @@
-# Hello World with Nuxt.js
+# Product Creation and Search Application
 
-https://nuxtjs.org/examples
+## Install App Dependencies
+
+    npm i
+
+## Run in Dev Mode
+
+    npm run dev
+
+## Build
+
+    npm run build
+
+## Run App Server
+
+    npm start
+

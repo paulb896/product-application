@@ -1,5 +1,5 @@
 {
-  "name": "example-hello-world",
+  "name": "product-app-server",
   "dependencies": {
     "@nuxtjs/apollo": "4.0.0-rc19",
     "@nuxtjs/component-cache": "1.1.5",

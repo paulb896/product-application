@@ -28,6 +28,9 @@ export default {
         }
       });
     }
+  },
+  head: {
+    title: 'Create Product'
   }
 };
 </script>

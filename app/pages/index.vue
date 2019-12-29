@@ -8,7 +8,7 @@
 export default {
   layout: 'product',
   head: {
-    title: "Home page"
+    title: 'Home page'
   }
 };
 </script>

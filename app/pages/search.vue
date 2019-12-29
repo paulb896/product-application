@@ -28,7 +28,7 @@ export default {
     }
   },
   head: {
-    title: 'Search Page'
+    title: 'Search Products'
   }
 }
 </script>

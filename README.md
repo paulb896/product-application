@@ -43,6 +43,10 @@ The app should now be available on localhost port 80: http://localhost.
 
     ab -n 5000 -c 50 http://localhost/search
 
+## Benchmark GraphQL Endpoint
+
+    ab -n 12000 -c 100 -T 'application/json' -p example-search-query.json  http://localhost/graphql
+
 -----
 
 ## Elasticsearch Docs

@@ -15,9 +15,13 @@ export default {
     //     }
     // }
   },
-  modules: ['@nuxtjs/apollo'],
+  modules: [
+    '@nuxtjs/apollo',
+    '@nuxtjs/component-cache',
+    // 'nuxt-buefy'
+  ],
   apollo: {
-    domain: 'localhost:4000',
+    // domain: 'localhost:4000',
     clientConfigs: {
       default: '~/apollo/clientConfig.js'
     }

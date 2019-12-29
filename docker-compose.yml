@@ -2,6 +2,7 @@ version: "3"
 
 services:
   elasticsearch:
+    container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     environment:
       - node.name=elasticsearch
@@ -11,18 +12,19 @@ services:
     ports:
       - "9200:9200"
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.5.1
-    ports:
-    - "5601:5601"
+  # Elasticsearch index management site 
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.5.1
+  #   ports:
+  #   - "5601:5601"
 
   search_api:
     build: ./search_api/
     environment:
       - ELASTIC_SEARCH_URL=http://elasticsearch:9200
     restart: always
-    ports:
-      - "4000:4000"
+    # ports:
+    #   - "4000:4000"
     command:
       "npm run start"
     depends_on:
@@ -42,7 +44,7 @@ services:
       - search_api
 
   nginx:
-    image: nginx:1.13
+    image: nginx:1.17.6
     container_name: real-time-news-nginx
     ports:
       - "80:80"
@@ -50,3 +52,4 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - nuxt
+      - search_api

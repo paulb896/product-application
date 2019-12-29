@@ -11,12 +11,34 @@ const typeDefs = gql`
     title: String
   }
 
+  type AddProductResult {
+    success: Boolean!
+    errors: [String]
+  }
+
   type Query {
     search (text: String): [Result]
+  }
+
+  type Mutation {
+    addProduct(title: String!): AddProductResult
   }
 `;
 
 const resolvers = {
+  Mutation: {
+    addProduct: (async (_, {title}) => {
+      console.log('adding product', title);
+        await client.index({
+            index: 'my-index',
+            body: {
+              title
+            }
+          })
+
+        await client.indices.refresh({ index: 'my-index' });
+    })
+  },
   Query: {
     search: async (_, { text }) => {
       return client.search({

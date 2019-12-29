@@ -1,0 +1,1 @@
+{"query":"{\n  search (text: \"allo\") {\n    title\n  }\n}"}

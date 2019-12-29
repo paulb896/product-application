@@ -1,0 +1,5 @@
+mutation ($title: String!) {
+  addProduct (title: $title) {
+    success
+  }
+}

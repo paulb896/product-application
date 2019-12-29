@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <h1>Welcome!</h1>
-    <NLink to="/search">
-      Search Page
-    </NLink>
+  <div class="product">
+    <h1>Product Website</h1>
   </div>
 </template>
 
 <script>
 export default {
+  layout: 'product',
   head: {
-    title: 'Home page'
+    title: "Home page"
   }
-}
+};
 </script>

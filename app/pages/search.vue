@@ -1,21 +1,19 @@
 <template>
   <div>
+    <input v-model="searchText" placeholder="Search text" />
     <ul>
       <li v-for="item in search" :key="item.id">
         {{ item.title }}
       </li>
     </ul>
-    <input v-model="searchText" placeholder="Search text" />
-    <NLink to="/">
-      Home page
-    </NLink>
   </div>
 </template>
 
 <script>
-import searchQuery from './search.gql'
+import searchQuery from '~/apollo/search.gql'
 
 export default {
+  layout: 'product',
   data: () => ({
     searchText: 'Hello'
   }),

@@ -9,7 +9,7 @@ export default function(context){
 		httpEndpoint: process.env.SERVER_SEARCH_URL ? process.env.SERVER_SEARCH_URL : 'http://localhost:4000',
 		  // optional
 		  // override HTTP endpoint in browser only
-		browserHttpEndpoint: 'http://localhost:4000',
+		browserHttpEndpoint: '/graphql',
   		// cache: new InMemoryCache(),
 	    // wsEndpoint: 'ws://localhost:8080/v1/graphql',
   	}

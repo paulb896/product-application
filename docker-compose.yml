@@ -2,24 +2,19 @@ version: "3"
 
 services:
   elasticsearch:
-    # build: ./elasticsearch/
-    # image: 'bitnami/elasticsearch:latest'
-    # ulimits:
-    #   memlock:
-    #     soft: -1
-    #     hard: -1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     environment:
       - node.name=elasticsearch
-      # - discovery.seed_hosts=elasticsearch
-      # - cluster.name=docker-cluster
-      # - bootstrap.memory_lock=true
       - cluster.initial_master_nodes=elasticsearch
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - ELASTICSEARCH_PORT_NUMBER=9200
-      # Invalid kernel settings. Elasticsearch requires at least: vm.max_map_count = 262144
     ports:
       - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    ports:
+    - "5601:5601"
 
   search_api:
     build: ./search_api/

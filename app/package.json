@@ -1,9 +1,9 @@
 {
   "name": "example-hello-world",
   "dependencies": {
-    "@nuxtjs/apollo": "^4.0.0-rc19",
+    "@nuxtjs/apollo": "4.0.0-rc19",
     "nuxt": "latest",
-    "nuxt-generate-cluster": "^2.6.0"
+    "nuxt-generate-cluster": "2.6.0"
   },
   "scripts": {
     "build": "nuxt build",

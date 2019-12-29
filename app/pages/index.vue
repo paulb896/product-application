@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Welcome!</h1>
-    <NLink to="/about">
-      About Page
+    <NLink to="/search">
+      Search Page
     </NLink>
   </div>
 </template>

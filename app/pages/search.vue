@@ -30,7 +30,7 @@ export default {
     }
   },
   head: {
-    title: 'About page'
+    title: 'Search Page'
   }
 }
 </script>

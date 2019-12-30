@@ -1,13 +1,6 @@
 // import { InMemoryCache } from "apollo-cache-inmemory";
 
 export default function(context){
-
-	console.log('process.env.CLIENT_SEARCH_URL', process.env.CLIENT_SEARCH_URL, process.env.SERVER_SEARCH_URL);
-
-const clientSearchUrl = process.env.CLIENT_SEARCH_URL;
-const isClientSearchUrl = !!process.env.CLIENT_SEARCH_URL;
-
-
   return {
   		// httpLinkOptions: {
     	// 	uri: 'http://localhost:4000',
@@ -21,8 +14,8 @@ const isClientSearchUrl = !!process.env.CLIENT_SEARCH_URL;
 		// browserHttpEndpoint: process.env.CLIENT_SEARCH_URL ? 'http://localhost:4000' : '/graphql',
 		// browserHttpEndpoint: isClientSearchUrl ? process.env.CLIENT_SEARCH_URL : 'http://localhost:4000',
 		// browserHttpEndpoint: process.env.CLIENT_SEARCH_URL ? process.env.CLIENT_SEARCH_URL : 'http://localhost:4000',
-		// browserHttpEndpoint: '/graphql',
-		browserHttpEndpoint: 'http://localhost:4000',
+		browserHttpEndpoint: '/graphql',
+		// browserHttpEndpoint: 'http://localhost:4000',
 		// persisting: true
 		// },
 		// test: {

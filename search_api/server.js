@@ -103,6 +103,10 @@ const server = new ApolloServer({
   persistedQueries: {
     cache: true
   },
+  subscriptions: {
+    keepAlive: 1000,
+    path: '/api/ws'
+  },
   cacheControl: { defaultMaxAge: 10 },
 });
 

@@ -6,9 +6,9 @@
 
 <script>
 export default {
-  layout: 'product',
+  layout: "product",
   head: {
-    title: 'Home page'
+    title: "Home page"
   }
 };
 </script>

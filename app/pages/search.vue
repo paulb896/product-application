@@ -3,32 +3,40 @@
     <input v-model="searchText" placeholder="Search text" />
     <ul>
       <li v-for="item in search" :key="item.id">
-        {{ item.title }}
+        <NLink v-bind:to="item.id | makeLink">{{item.title}}</NLink>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import searchQuery from '~/apollo/search.gql'
+import searchQuery from "~/apollo/search.gql";
 
 export default {
-  layout: 'product',
+  layout: "product",
   data: () => ({
-    searchText: 'Hello'
+    searchText: "Hello",
+    search: () => {
+      return [];
+    }
   }),
+  filters: {
+    makeLink: id => {
+      return `/product/${id}`;
+    }
+  },
   apollo: {
     search: {
       query: searchQuery,
-      variables () {
+      variables() {
         return {
           text: this.searchText
-        }
+        };
       }
     }
   },
   head: {
-    title: 'Search Products'
+    title: "Search Products"
   }
-}
+};
 </script>

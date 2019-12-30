@@ -1,0 +1,6 @@
+query ($id: String){
+  product(id: $id) {
+    title
+    id
+  }
+}

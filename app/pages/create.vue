@@ -8,14 +8,14 @@
 </template>
 
 <script>
-import createMutation from '~/apollo/create.gql';
+import createMutation from "~/apollo/create.gql";
 
 export default {
-  name: 'create',
-  layout: 'product',
+  name: "create",
+  layout: "product",
   data() {
     return {
-      title: ''
+      title: ""
     };
   },
   methods: {
@@ -30,7 +30,7 @@ export default {
     }
   },
   head: {
-    title: 'Create Product'
+    title: "Create Product"
   }
 };
 </script>

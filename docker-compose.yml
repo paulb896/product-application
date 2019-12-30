@@ -35,6 +35,7 @@ services:
     container_name: app-website
     environment:
       - SERVER_SEARCH_URL=http://search_api:4000
+      - CLIENT_SEARCH_URL=/graphql
     restart: always
     # ports:
     #   - "3333:3333"

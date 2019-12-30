@@ -2,5 +2,6 @@
 query ($text: String) {
   search (text:$text) {
     title
+    id
   }
 }

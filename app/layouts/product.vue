@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <ProductNav/>
+  <div class="container">
+    <ProductNav class="mb-2"/>
     <Nuxt/>
   </div>
 </template>

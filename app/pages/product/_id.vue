@@ -1,7 +1,9 @@
 <template>
-  <div>
-    Product ID: <b>{{ $route.params.id }}</b>
-    <h1>{{ product ? product.title : '' }}</h1>
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ product ? product.title : '' }}</h5>
+      <p class="card-text">Product ID: {{ $route.params.id }}</p>
+    </div>
   </div>
 </template>
 

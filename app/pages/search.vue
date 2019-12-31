@@ -1,9 +1,9 @@
 <template>
   <div>
-    <input v-model="searchText" placeholder="Search text" />
-    <ul>
-      <li v-for="item in search" :key="item.id">
-        <NLink v-bind:to="item.id | makeLink">{{item.title}}</NLink>
+    <input class="form-control mr-sm-2" type="search" v-model="searchText" placeholder="Search text" />
+    <ul class="list-group">
+      <li v-for="item in search" :key="item.id" class="list-group-item">
+        <NLink class="btn btn-primary" v-bind:to="item.id | makeLink">{{item.title}}</NLink>
       </li>
     </ul>
   </div>

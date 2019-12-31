@@ -1,6 +1,7 @@
 {
   "name": "product-app-server",
   "dependencies": {
+    "@growthbunker/vuetimeline": "0.1.12",
     "@nuxtjs/apollo": "4.0.0-rc19",
     "@nuxtjs/component-cache": "1.1.5",
     "nuxt": "latest",

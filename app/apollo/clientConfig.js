@@ -3,9 +3,12 @@
 export default function(context){
   return {
 		httpEndpoint: process.env.SERVER_SEARCH_URL ? process.env.SERVER_SEARCH_URL : 'http://localhost:4000',
-
 		browserHttpEndpoint: '/graphql',
+		// cache: new InMemoryCache(),
+		wsEndpoint: 'ws://localhost:4000/api/ws',
+		// wsEndpoint: process.env.WS_ENDPOINT
 
-		wsEndpoint: process.env.WEBSOCKET_URL ? process.env.WEBSOCKET_URL : '/api/ws'
+		// Interesting option to exclusively use websockets
+		// websocketsOnly: true
   	}
 }

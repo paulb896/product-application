@@ -7,38 +7,51 @@ services:
     environment:
       - node.name=elasticsearch
       - cluster.initial_master_nodes=elasticsearch
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
       - ELASTICSEARCH_PORT_NUMBER=9200
-    ports:
-      - "9200:9200"
+    # ports:
+    #   - "9200:9200"
 
   # Elasticsearch index management site 
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.5.1
-  #   ports:
-  #   - "5601:5601"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    ports:
+    - "5601:5601"
 
   search_api:
-    build: ./search_api/
+    container_name: search_api
+    build:
+      context: ./search_api/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./search_api/:/src
     environment:
       - ELASTIC_SEARCH_URL=http://elasticsearch:9200
     restart: always
+    ports:
+      - "4000:4000"
     command:
-      "npm run start"
+      "npm run dev"
     depends_on:
       - elasticsearch
 
   nuxt:
-    build: ./app/
+    build:
+      context: ./app/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./app/:/src
     container_name: app-website
     environment:
       - SERVER_SEARCH_URL=http://search_api:4000
       - CLIENT_SEARCH_URL=/graphql
+      - WS_ENDPOINT=ws://localhost:4000/api/ws/
+      - WEBSOCKET_URL=ws://localhost:4000/api/ws/
     restart: always
-    # ports:
-    #   - "3333:3333"
-    # command:
-    #   "npm run start"
+    ports:
+      - "3000:3000"
+    command:
+      "npm run dev"
     depends_on:
       - search_api
 
@@ -46,9 +59,9 @@ services:
     image: nginx:1.17.6
     container_name: real-time-news-nginx
     ports:
-      - "80:80"
+      - "8000:80"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/dev:/etc/nginx/conf.d
     depends_on:
       - nuxt
       - search_api

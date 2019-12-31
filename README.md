@@ -24,6 +24,10 @@ The `docker-compose` command with pull down all necessary images for Node.js, El
 
 ### Build the App and All Dependencies
 
+    # Build dev dependencies
+    docker-compose -f docker-compose-dev.yml build
+
+    # Build prod dependencies
     docker-compose build
 
     # Using docker-compose >= 1.23.0
@@ -34,7 +38,12 @@ The `docker-compose` command with pull down all necessary images for Node.js, El
 
 ## Running the App
 
-    docker-compose up
+    # Dev
+    docker-compose -f docker-compose-dev.yml up -d
+
+    # Prod
+    docker-compose up -d
+
 
 The app should now be available on localhost port 80: http://localhost.
 

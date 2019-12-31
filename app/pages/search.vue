@@ -3,7 +3,12 @@
     <input class="form-control mr-sm-2" type="search" v-model="searchText" placeholder="Search text" />
     <ul class="list-group">
       <li v-for="item in search" :key="item.id" class="list-group-item">
-        <NLink class="btn btn-primary" v-bind:to="item.id | makeLink">{{item.title}}</NLink>
+        <NLink v-bind:to="item.id | makeLink">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.title }}</h5>
+            <p class="card-text">{{ item.description }}</p>
+          </div>
+        </NLink>
       </li>
     </ul>
   </div>

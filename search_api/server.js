@@ -45,17 +45,25 @@ const resolvers = {
   },
   Mutation: {
     addProduct: (async (_, { title, description }) => {
-      await client.index({
+      return client.index({
         index: 'my-index',
         body: {
           title,
           description
         }
+      }).then(async res => {
+        const product = { title, description, id: res.body._id };
+
+        pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+
+        // TODO: MOVE THIS SOMEWHERE ELSE?
+        await client.indices.refresh({ index: 'my-index' });
+
+        return {
+          success: true,
+          product
+        }
       });
-
-      pubsub.publish(PRODUCT_CREATED, { productCreated: { title, description } });
-
-      await client.indices.refresh({ index: 'my-index' });
     })
   },
   Query: {

@@ -4,6 +4,7 @@
       <div class="form-group mx-sm-3 mb-2">
         <label for="inputPassword2" class="sr-only">Title</label>
         <input type="text" class="form-control" v-model="title" id="title" placeholder="A title for the product">
+        <input type="text" class="form-control" v-model="description" id="title" placeholder="Product description">
       </div>
       <button @click="createProduct()" type="submit" class="btn btn-primary mb-2">Create Product</button>
     </form>
@@ -18,16 +19,18 @@ export default {
   layout: "product",
   data() {
     return {
-      title: ""
+      title: "",
+      description: ""
     };
   },
   methods: {
     createProduct() {
-      const { title } = this.$data;
+      const { title, description } = this.$data;
       this.$apollo.mutate({
         mutation: createMutation,
         variables: {
-          title
+          title,
+          description
         }
       });
     }

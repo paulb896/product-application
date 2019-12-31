@@ -3,6 +3,7 @@
     <div class="card-body">
       <h5 class="card-title">{{ product ? product.title : '' }}</h5>
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
+      <p class="card-text">{{ product ? product.description : '' }}</p>
     </div>
   </div>
 </template>

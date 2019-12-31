@@ -12,6 +12,7 @@ const typeDefs = gql`
   type Product {
     id: ID
     title: String
+    description: String
   }
 
   type AddProductResult {
@@ -26,7 +27,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addProduct(title: String!): AddProductResult
+    addProduct(title: String description: String): AddProductResult
   }
 
   type Subscription {
@@ -43,15 +44,16 @@ const resolvers = {
     },
   },
   Mutation: {
-    addProduct: (async (_, { title }) => {
+    addProduct: (async (_, { title, description }) => {
       await client.index({
         index: 'my-index',
         body: {
-          title
+          title,
+          description
         }
       });
 
-      pubsub.publish(PRODUCT_CREATED, { productCreated: { title } });
+      pubsub.publish(PRODUCT_CREATED, { productCreated: { title, description } });
 
       await client.indices.refresh({ index: 'my-index' });
     })
@@ -64,6 +66,7 @@ const resolvers = {
       }).then(product => {
         return {
           title: product.body._source.title,
+          description: product.body._source.description,
           id: product.body._id
         }
       })
@@ -82,6 +85,7 @@ const resolvers = {
         if (results && results.hits.hits && results.hits.hits.length) {
           return results.hits.hits.map(result => ({
             title: result._source.title,
+            description: result._source.description,
             id: result._id
           }));
         }

@@ -1,6 +1,7 @@
 subscription {
   productCreated {
     title
+    description
     id
   }
 }

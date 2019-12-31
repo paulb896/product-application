@@ -2,9 +2,8 @@
   <div>
     <div class="form-inline">
       <div class="form-group mb-2">
-        <label for="inputPassword2" class="sr-only">Title</label>
         <input type="text" class="form-control" v-model="title" id="title" placeholder="A title for the product">
-        <input type="text" class="form-control" v-model="description" id="title" placeholder="Product description">
+        <input type="text" class="form-control" v-model="description" id="description" placeholder="Product description">
       </div>
       <button @click="createProduct()" class="btn btn-primary mb-2">Create Product</button>
     </div>

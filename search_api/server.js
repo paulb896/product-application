@@ -21,6 +21,11 @@ const typeDefs = gql`
     errors: [String]
   }
 
+  type RemoveProductResult {
+    success: Boolean!
+    errors: [String]
+  }
+
   type UpdateProductResult {
     product: Product
     success: Boolean!
@@ -35,6 +40,7 @@ const typeDefs = gql`
   type Mutation {
     addProduct(title: String description: String): AddProductResult
     updateProduct(id: String! title: String description: String): UpdateProductResult
+    removeProduct(id: String!): RemoveProductResult
   }
 
   type Subscription {
@@ -69,6 +75,21 @@ const resolvers = {
         return {
           success: true,
           product
+        }
+      });
+    }),
+    removeProduct: (async (_, { id }) => {
+      return client.delete({
+        id,
+        index: 'my-index',
+      }).then(async () => {
+        // pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+
+        // TODO: MOVE THIS SOMEWHERE ELSE?
+        await client.indices.refresh({ index: 'my-index' });
+
+        return {
+          success: true
         }
       });
     }),

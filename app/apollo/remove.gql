@@ -1,0 +1,5 @@
+mutation ($id: String!) {
+  removeProduct(id: $id) {
+    success
+  }
+}

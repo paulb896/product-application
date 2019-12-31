@@ -21,6 +21,12 @@ const typeDefs = gql`
     errors: [String]
   }
 
+  type UpdateProductResult {
+    product: Product
+    success: Boolean!
+    errors: [String]
+  }
+
   type Query {
     search (text: String): [Product]
     product(id: String): Product
@@ -28,6 +34,7 @@ const typeDefs = gql`
 
   type Mutation {
     addProduct(title: String description: String): AddProductResult
+    updateProduct(id: String! title: String description: String): UpdateProductResult
   }
 
   type Subscription {
@@ -52,6 +59,29 @@ const resolvers = {
           description
         }
       }).then(async res => {
+        const product = { title, description, id: res.body._id };
+
+        pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+
+        // TODO: MOVE THIS SOMEWHERE ELSE?
+        await client.indices.refresh({ index: 'my-index' });
+
+        return {
+          success: true,
+          product
+        }
+      });
+    }),
+    updateProduct: (async (_, { id, title, description }) => {
+      return client.index({
+        index: 'my-index',
+        id,
+        body: {
+          title,
+          description
+        }
+      }).then(async res => {
+        // return {};
         const product = { title, description, id: res.body._id };
 
         pubsub.publish(PRODUCT_CREATED, { productCreated: product });

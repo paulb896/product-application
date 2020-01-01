@@ -11,6 +11,7 @@
 
 <script>
 import productQuery from "~/apollo/product.gql";
+import productUpdates from "~/apollo/productUpdated.gql";
 
 export default {
   layout: "product",
@@ -26,6 +27,11 @@ export default {
     }
   },
   apollo: {
+    $subscribe: {
+      productUpdates: {
+        query: productUpdates
+      }
+    },
     product: {
       query: productQuery,
       variables() {

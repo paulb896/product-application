@@ -35,6 +35,7 @@ const typeDefs = gql`
   type Query {
     search (text: String): [Product]
     product(id: String): Product
+    recentProducts: [Product]
   }
 
   type Mutation {
@@ -140,6 +141,26 @@ const resolvers = {
         }
       })
     }),
+    recentProducts: () => {
+      return client.search({
+        index: 'my-index',
+        sort: ['_id:desc'],
+        size: 10
+      }).then(({ body: results }) => {
+        if (results && results.hits.hits && results.hits.hits.length) {
+          return results.hits.hits.map(result => ({
+            title: result._source.title,
+            description: result._source.description,
+            id: result._id
+          }));
+        }
+
+        return [];
+      }).catch(e => {
+        console.log('Could not get recent products', e);
+        return [];
+      })
+    },
     search: async (_, { text }) => {
       return client.search({
         index: 'my-index',

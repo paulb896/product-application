@@ -16,23 +16,20 @@
 
 <script>
 import searchQuery from "~/apollo/search.gql";
-import productRemovals from "~/apollo/productRemoved.gql";
-import productUpdates from "~/apollo/productUpdated.gql";
+// import productRemovals from "~/apollo/productRemoved.gql";
+// import productUpdates from "~/apollo/productUpdated.gql";
 
 export default {
   layout: "product",
   data: () => ({
     removedProducts: [],
     searchText: "Hello",
-    search: () => {
+    search() {
       return [];
     }
   }),
   filters: {
-    isProductShown: () => {
-      return true;
-    },
-    makeLink: id => {
+    makeLink(id) {
       return `/product/${id}`;
     }
   },
@@ -44,14 +41,6 @@ export default {
     }
   },
   apollo: {
-    $subscribe: {
-      products: {
-        query: productRemovals
-      },
-      productUpdates: {
-        query: productUpdates
-      }
-    },
     search: {
       query: searchQuery,
       variables() {

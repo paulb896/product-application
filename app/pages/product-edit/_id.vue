@@ -28,7 +28,6 @@
 import productQuery from "~/apollo/product.gql";
 import updateMutation from "~/apollo/update.gql";
 import removeMutation from "~/apollo/remove.gql";
-import productUpdates from "~/apollo/productUpdated.gql";
 
 export default {
   layout: "product",
@@ -42,7 +41,7 @@ export default {
     }
   }),
   filters: {
-    makeLink: id => {
+    makeLink(id) {
       return `/product/${id}`;
     }
   },
@@ -57,7 +56,7 @@ export default {
         variables: {
           id
         },
-        update: () => {
+        update() {
           window.location.href = "/";
         }
       });
@@ -78,11 +77,6 @@ export default {
     }
   },
   apollo: {
-    $subscribe: {
-      productUpdates: {
-        query: productUpdates
-      }
-    },
     product: {
       query: productQuery,
       variables() {

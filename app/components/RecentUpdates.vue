@@ -18,10 +18,8 @@
 </template>
 
 <script>
-import productSubscription from "~/apollo/productCreated.gql";
+import productAdditions from "~/apollo/productCreated.gql";
 import recentProducts from "~/apollo/recentProducts.gql";
-import productUpdates from "~/apollo/productUpdated.gql";
-import productRemovals from "~/apollo/productRemoved.gql";
 
 export default {
   data: () => ({
@@ -35,17 +33,17 @@ export default {
             product.date = new Date();
           }
           return product;
-        });
+        }).filter(p => p.title);
     }
   },
   filters: {
     vaildDate(productDate) {
       return productDate ? productDate : new Date();
     },
-    makeLink: id => {
+    makeLink(id) {
       return `/product/${id}`;
     },
-    productColor: title => {
+    productColor(title) {
       function getProductColor (charCode) {
         if (charCode >= 97 && charCode < 100) {
           return 'red';
@@ -72,14 +70,8 @@ export default {
       query: recentProducts
     },
     $subscribe: {
-      productUpdates: {
-        query: productUpdates
-      },
-      removedProducts: {
-        query: productRemovals
-      },
       products: {
-        query: productSubscription,
+        query: productAdditions,
         result(result) {
           this.products.unshift(result.data.productCreated);
         }

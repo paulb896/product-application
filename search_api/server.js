@@ -13,6 +13,7 @@ const typeDefs = gql`
     id: ID
     title: String
     description: String
+    dateCreated: String
   }
 
   type AddProductResult {
@@ -55,6 +56,29 @@ const PRODUCT_CREATED = 'PRODUCT_CREATED'
 const PRODUCT_UPDATED = 'PRODUCT_UPDATED'
 const PRODUCT_REMOVED = 'PRODUCT_REMOVED'
 
+const updatedProducts = [];
+const createdProducts = [];
+
+const ONE_MIN = 15 * 1000;
+
+const lastProductCreation = new Date();
+const lastProductUpdate = new Date();
+
+// setInterval(() => {
+//   console.log('sending out all events');
+//   if (((new Date) - lastProductCreation) < ONE_MIN) {
+//     createdProducts.forEach(product => {
+//       pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+//     });
+//   }
+
+//   if (((new Date) - lastProductUpdate) < ONE_MIN) {
+//     updatedProducts.forEach(product => {
+//       pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
+//     });
+//   }
+// }, 15000)
+
 const resolvers = {
   Subscription: {
     productCreated: {
@@ -69,16 +93,23 @@ const resolvers = {
   },
   Mutation: {
     addProduct: (async (_, { title, description }) => {
+      const dateCreated = new Date();
       return client.index({
         index: 'my-index',
         body: {
           title,
-          description
+          description,
+          dateCreated
         }
       }).then(async res => {
-        const product = { title, description, id: res.body._id };
+        const product = { title, description, id: res.body._id, dateCreated };
 
         pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+        // createdProducts.push(product);
+        // if (createdProducts.length > 10) {
+        //   createdProducts.shift();
+        // }
+        // lastProductCreation = new Date();
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -117,6 +148,11 @@ const resolvers = {
         const product = { title, description, id: res.body._id };
 
         pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
+        // updatedProducts.push(product);
+        // if (updatedProducts.length > 10) {
+        //   updatedProducts.shift();
+        // }
+        // lastProductUpdate = new Date();
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -137,20 +173,22 @@ const resolvers = {
         return {
           title: product.body._source.title,
           description: product.body._source.description,
+          dateCreated: result._source.dateCreated,
           id: product.body._id
         }
       })
     }),
-    recentProducts: () => {
+    recentProducts: async () => {
       return client.search({
         index: 'my-index',
-        sort: ['_id:desc'],
+        sort: ['dateCreated:desc'],
         size: 10
       }).then(({ body: results }) => {
         if (results && results.hits.hits && results.hits.hits.length) {
           return results.hits.hits.map(result => ({
             title: result._source.title,
             description: result._source.description,
+            dateCreated: result._source.dateCreated,
             id: result._id
           }));
         }
@@ -176,6 +214,7 @@ const resolvers = {
           return results.hits.hits.map(result => ({
             title: result._source.title,
             description: result._source.description,
+            dateCreated: result._source.dateCreated,
             id: result._id
           }));
         }
@@ -205,6 +244,16 @@ const server = new ApolloServer({
 });
 
 // The `listen` method launches a web server.
-server.listen().then(({ url }) => {
+server.listen().then(async ({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
+  await client.indices.putMapping({
+    index: 'my-index',
+    body: {
+      properties: {
+        title: { type: 'text' },
+        description: { type: 'text' },
+        dateCreated: { type: 'date' }
+      }
+    }
+  });
 });

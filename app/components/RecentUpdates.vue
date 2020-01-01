@@ -4,7 +4,7 @@
     <div v-for="item in allProducts" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
-          :date="new Date()"
+          :date="item.dateCreated"
           :title="item.title"
           :description="item.description"
           category="New Product"
@@ -20,6 +20,8 @@
 <script>
 import productSubscription from "~/apollo/productCreated.gql";
 import recentProducts from "~/apollo/recentProducts.gql";
+import productUpdates from "~/apollo/productUpdated.gql";
+import productRemovals from "~/apollo/productRemoved.gql";
 
 export default {
   data: () => ({
@@ -27,7 +29,13 @@ export default {
   }),
   computed: {
     allProducts() {
-      return this.$data.products.concat(this.$data.recentProducts);
+      return this.$data.products.concat(this.$data.recentProducts)
+        .map(product => {
+          if (!product.date) {
+            product.date = new Date();
+          }
+          return product;
+        });
     }
   },
   filters: {
@@ -61,6 +69,12 @@ export default {
       query: recentProducts
     },
     $subscribe: {
+      productUpdates: {
+        query: productUpdates
+      },
+      removedProducts: {
+        query: productRemovals
+      },
       products: {
         query: productSubscription,
         result(result) {

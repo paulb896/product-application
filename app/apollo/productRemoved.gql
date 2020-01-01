@@ -1,0 +1,7 @@
+subscription {
+  productRemoved {
+    title
+    description
+    id
+  }
+}

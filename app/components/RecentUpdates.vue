@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import productSubscription from "~/apollo/updates.gql";
+import productSubscription from "~/apollo/productUpdated.gql";
 
 export default {
   data: () => ({
@@ -44,7 +44,7 @@ export default {
           return 'yellow';
         }
 
-        return 'blue';
+        return 'orange';
       }
 
       return title ? getProductColor(parseInt(title.toLowerCase().charCodeAt(0), 10)) : 'blue'

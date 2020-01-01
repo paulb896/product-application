@@ -45,15 +45,25 @@ const typeDefs = gql`
 
   type Subscription {
     productCreated: Product
+    productUpdated: Product
+    productRemoved: Product
   }
 `;
 
 const PRODUCT_CREATED = 'PRODUCT_CREATED'
+const PRODUCT_UPDATED = 'PRODUCT_UPDATED'
+const PRODUCT_REMOVED = 'PRODUCT_REMOVED'
 
 const resolvers = {
   Subscription: {
     productCreated: {
       subscribe: () => pubsub.asyncIterator([PRODUCT_CREATED]),
+    },
+    productUpdated: {
+      subscribe: () => pubsub.asyncIterator([PRODUCT_UPDATED]),
+    },
+    productRemoved: {
+      subscribe: () => pubsub.asyncIterator([PRODUCT_REMOVED]),
     },
   },
   Mutation: {
@@ -83,7 +93,7 @@ const resolvers = {
         id,
         index: 'my-index',
       }).then(async () => {
-        // pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+        pubsub.publish(PRODUCT_REMOVED, { productRemoved: { id } });
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -105,7 +115,7 @@ const resolvers = {
         // return {};
         const product = { title, description, id: res.body._id };
 
-        pubsub.publish(PRODUCT_CREATED, { productCreated: product });
+        pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import productSubscription from "~/apollo/productUpdated.gql";
+import productSubscription from "~/apollo/productCreated.gql";
 
 export default {
   data: () => ({

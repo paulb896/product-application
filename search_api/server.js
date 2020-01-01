@@ -173,7 +173,7 @@ const resolvers = {
         return {
           title: product.body._source.title,
           description: product.body._source.description,
-          dateCreated: result._source.dateCreated,
+          dateCreated: product.body._source.dateCreated,
           id: product.body._id
         }
       })

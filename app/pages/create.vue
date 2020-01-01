@@ -1,12 +1,25 @@
 <template>
   <div>
-    <div class="form-inline">
-      <div class="form-group mb-2">
-        <input type="text" class="form-control" v-model="title" id="title" placeholder="A title for the product">
-        <input type="text" class="form-control" v-model="description" id="description" placeholder="Product description">
+    <form>
+      <div class="form-row">
+        <label for="title" class="col-sm-2 col-form-label">Product Title</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" v-model="title" id="title" placeholder="A title for the product">
+        </div>
       </div>
-      <button @click="createProduct()" class="btn btn-primary mb-2">Create Product</button>
-    </div>
+      <div class="form-row">
+        <label for="description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" v-model="description" id="description" placeholder="Product description">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="create" class="col-sm-2"></label>
+        <div class="col-sm-3">
+          <button id="create" @click="createProduct()" class="btn btn-primary">Create Product</button>
+        </div>
+      </div>
+    </form>
     <RecentUpdates />
   </div>
 </template>

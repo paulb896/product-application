@@ -1,5 +1,6 @@
 subscription {
   productRemoved {
+    title
     id
   }
 }

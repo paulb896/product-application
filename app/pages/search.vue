@@ -16,8 +16,6 @@
 
 <script>
 import searchQuery from "~/apollo/search.gql";
-// import productRemovals from "~/apollo/productRemoved.gql";
-// import productUpdates from "~/apollo/productUpdated.gql";
 
 export default {
   layout: "product",

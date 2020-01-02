@@ -1,6 +1,10 @@
 <template>
   <div class="card">
-    <div class="card-body">
+    <div v-if="!product.title" class="card-body">
+      <h3>Product Has Been Deleted!</h3>
+      <NLink to="/search">Go to Product Search</NLink>
+    </div>
+    <div v-else class="card-body">
       <h2>Product Edit</h2>
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
       <h5 class="card-title">Current Title: {{ product ? product.title : '' }}</h5>
@@ -18,7 +22,7 @@
         <button @click="deleteProduct()" class="btn btn-danger mb-2">Delete Product</button>
       </div>
     </div>
-    <div class="card-body">
+    <div v-if="!!product.title" class="card-body">
       <NLink v-bind:to="$route.params.id | makeLink">Back to Product</NLink>
     </div>
   </div>
@@ -48,16 +52,15 @@ export default {
   methods: {
     cancelDelete() {
       this.$data.productRemovalIntent = false;
+      // this.
     },
     deleteProduct() {
+      const self = this;
       const { id } = this.$data.product;
       this.$apollo.mutate({
         mutation: removeMutation,
         variables: {
           id
-        },
-        update() {
-          window.location.href = "/";
         }
       });
     },

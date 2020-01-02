@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form>
+    <div>
       <div class="form-row">
         <label for="title" class="col-sm-2 col-form-label">Product Title</label>
         <div class="col-sm-5">
@@ -19,7 +19,7 @@
           <button id="create" @click="createProduct()" class="btn btn-primary">Create Product</button>
         </div>
       </div>
-    </form>
+    </div>
     <RecentUpdates />
   </div>
 </template>

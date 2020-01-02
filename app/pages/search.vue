@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input class="form-control mr-sm-2" type="search" v-model="searchText" placeholder="Search text" />
+    <input class="form-control form-control-lg" type="search" v-model="searchText" placeholder="Search text" />
     <ul class="list-group">
       <li v-for="item in filteredProducts" :key="item.id" class="list-group-item list-group-item-action">
         <NLink v-bind:to="item.id | makeLink">

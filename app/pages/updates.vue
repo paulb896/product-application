@@ -1,20 +1,20 @@
 <template>
   <div class="product">
-    <h1>Updates</h1>
-    <RecentUpdates />
+    <h2>Live Updates</h2>
+    <LiveUpdates />
   </div>
 </template>
 
 <script>
-import RecentUpdates from '~/components/RecentUpdates'
+import LiveUpdates from '~/components/LiveUpdates'
 
 export default {
   layout: "product",
   head: {
-    title: "Product Updates"
+    title: "Live Product Updates"
   },
   components: {
-    RecentUpdates
+    LiveUpdates
   }
 };
 </script>

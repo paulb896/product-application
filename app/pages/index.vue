@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <h1>Product Website</h1>
+    <h2>Recent Updates</h2>
     <RecentUpdates />
   </div>
 </template>

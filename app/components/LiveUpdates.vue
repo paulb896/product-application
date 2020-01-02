@@ -1,7 +1,7 @@
 <template>
   <div>
     <b>New Products</b>
-    <div v-for="item in filteredRecentProducts" :key="item.id">
+    <div v-for="item in products" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
           :date="item.dateCreated | validDate"
@@ -26,13 +26,13 @@ export default {
     products: []
   }),
   computed: {
-    filteredRecentProducts() {
-      return this.$data.recentProducts.filter(p => p.title);
+    filteredProducts() {
+      return this.$data.products.filter(p => p.title);
     }
   },
   filters: {
     vaildDate(productDate) {
-      return productDate ? productDate : (new Date()).toISOString();
+      return productDate ? productDate : new Date();
     },
     makeLink(id) {
       return `/product/${id}`;
@@ -60,8 +60,13 @@ export default {
     }
   },
   apollo: {
-    recentProducts: {
-      query: recentProducts
+    $subscribe: {
+      products: {
+        query: productAdditions,
+        result(result) {
+          this.products.unshift(result.data.productCreated);
+        }
+      }
     }
   }
 };

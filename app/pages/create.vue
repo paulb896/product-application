@@ -20,19 +20,19 @@
         </div>
       </div>
     </div>
-    <RecentUpdates />
+    <LiveUpdates />
   </div>
 </template>
 
 <script>
 import createMutation from "~/apollo/create.gql";
-import RecentUpdates from '~/components/RecentUpdates'
+import LiveUpdates from '~/components/LiveUpdates'
 
 export default {
   name: "create",
   layout: "product",
   components: {
-    RecentUpdates
+    LiveUpdates
   },
   data() {
     return {

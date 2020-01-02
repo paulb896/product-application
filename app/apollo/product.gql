@@ -3,5 +3,7 @@ query ($id: String){
     title
     description
     id
+    dateCreated
+    mainImageUrl
   }
 }

@@ -4,5 +4,6 @@ query {
     description
     id
     dateCreated
+    mainImageUrl
   }
 }

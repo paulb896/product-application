@@ -1,12 +1,13 @@
 <template>
   <div>
-    <b>New Products</b>
+    <b>Product Updates</b>
     <div v-for="item in products" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
-          :date="item.dateCreated | validDate"
+          :date="item.dateCreated | vaildDate"
           :title="item.title"
           :description="item.description"
+          :thumbnail="item.mainImageUrl"
           category="New Product"
           icon="headset"
           :color="item.title | productColor" >

@@ -8,10 +8,12 @@
       <h2>Product Edit</h2>
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
       <h5 class="card-title">Current Title: {{ product ? product.title : '' }}</h5>
+      <img class="card-img-top" :src="product.mainImageUrl">
       <p class="card-text">Current Description: {{ product ? product.description : '' }}</p>
       <div class="form-group mb-2">
         <input type="text"  class="form-control" v-model="product.title" id="title" placeholder="A title for the product">
         <input type="text" class="form-control" v-model="product.description" id="description" placeholder="Product description">
+        <input type="text" class="form-control" v-model="product.mainImageUrl" id="mainImageUrl" placeholder="Product Main Image">
       </div>
       <div v-if="!productRemovalIntent">
         <button @click="updateProduct()" class="btn btn-primary mb-2">Update Product</button>
@@ -41,7 +43,9 @@ export default {
     description: "",
     product: {
       title: "",
-      description: ""
+      description: "",
+      mainImageUrl: "",
+      dateCreated: ""
     }
   }),
   filters: {
@@ -52,7 +56,6 @@ export default {
   methods: {
     cancelDelete() {
       this.$data.productRemovalIntent = false;
-      // this.
     },
     deleteProduct() {
       const self = this;
@@ -68,13 +71,15 @@ export default {
       this.$data.productRemovalIntent = true;
     },
     updateProduct() {
-      const { id, title, description } = this.$data.product;
+      const { id, title, description, mainImageUrl, dateCreated } = this.$data.product;
       this.$apollo.mutate({
         mutation: updateMutation,
         variables: {
           id,
           title,
-          description
+          description,
+          mainImageUrl,
+          dateCreated
         }
       });
     }

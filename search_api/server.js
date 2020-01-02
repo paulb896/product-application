@@ -14,6 +14,7 @@ const typeDefs = gql`
     title: String
     description: String
     dateCreated: String
+    mainImageUrl: String
   }
 
   type AddProductResult {
@@ -40,8 +41,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addProduct(title: String description: String): AddProductResult
-    updateProduct(id: String! title: String description: String): UpdateProductResult
+    addProduct(title: String description: String mainImageUrl: String): AddProductResult
+    updateProduct(id: String! title: String description: String mainImageUrl: String dateCreated: String): UpdateProductResult
     removeProduct(id: String!): RemoveProductResult
   }
 
@@ -56,28 +57,39 @@ const PRODUCT_CREATED = 'PRODUCT_CREATED'
 const PRODUCT_UPDATED = 'PRODUCT_UPDATED'
 const PRODUCT_REMOVED = 'PRODUCT_REMOVED'
 
-const updatedProducts = [];
-const createdProducts = [];
+// const updatedProducts = [];
+// const createdProducts = [];
+// const removedProducts = [];
 
-const ONE_MIN = 15 * 1000;
+// const ONE_MIN = 60 * 1000;
 
-const lastProductCreation = new Date();
-const lastProductUpdate = new Date();
+// const lastProductCreation = new Date();
+// const lastProductUpdate = new Date();
+// const lastProductRemoval = new Date();
 
 // setInterval(() => {
 //   console.log('sending out all events');
 //   if (((new Date) - lastProductCreation) < ONE_MIN) {
+//     console.log('sending out create events!!!!!!', createdProducts);
 //     createdProducts.forEach(product => {
 //       pubsub.publish(PRODUCT_CREATED, { productCreated: product });
 //     });
 //   }
 
 //   if (((new Date) - lastProductUpdate) < ONE_MIN) {
+//     console.log('sending out update events!!!!!!', updatedProducts);
 //     updatedProducts.forEach(product => {
 //       pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
 //     });
 //   }
-// }, 15000)
+
+//   if (((new Date) - lastProductRemoval) < 2 * ONE_MIN) {
+//     console.log('sending out removal events!!!!!!', removedProducts);
+//     removedProducts.forEach(product => {
+//       pubsub.publish(PRODUCT_REMOVED, { productRemoved: product });
+//     });
+//   }
+// }, 10000)
 
 const resolvers = {
   Subscription: {
@@ -92,17 +104,18 @@ const resolvers = {
     },
   },
   Mutation: {
-    addProduct: (async (_, { title, description }) => {
+    addProduct: (async (_, { title, description, mainImageUrl }) => {
       const dateCreated = new Date();
       return client.index({
         index: 'my-index',
         body: {
           title,
           description,
-          dateCreated
+          dateCreated,
+          mainImageUrl
         }
       }).then(async res => {
-        const product = { title, description, id: res.body._id, dateCreated };
+        const product = { title, description, id: res.body._id, dateCreated, mainImageUrl };
 
         pubsub.publish(PRODUCT_CREATED, { productCreated: product });
         // createdProducts.push(product);
@@ -126,6 +139,11 @@ const resolvers = {
         index: 'my-index',
       }).then(async () => {
         pubsub.publish(PRODUCT_REMOVED, { productRemoved: { id } });
+        // removedProducts.push( { id } );
+        // if (removedProducts.length > 10) {
+        //   removedProducts.shift();
+        // }
+        // lastProductRemoval = new Date();
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -135,17 +153,18 @@ const resolvers = {
         }
       });
     }),
-    updateProduct: (async (_, { id, title, description }) => {
+    updateProduct: (async (_, { id, title, description, mainImageUrl, dateCreated }) => {
       return client.index({
         index: 'my-index',
         id,
         body: {
           title,
-          description
+          description,
+          mainImageUrl,
+          dateCreated
         }
       }).then(async res => {
-        // return {};
-        const product = { title, description, id: res.body._id };
+        const product = { title, description, mainImageUrl, dateCreated, id: res.body._id };
 
         pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
         // updatedProducts.push(product);
@@ -174,6 +193,7 @@ const resolvers = {
           title: product.body._source.title,
           description: product.body._source.description,
           dateCreated: product.body._source.dateCreated,
+          mainImageUrl: product.body._source.mainImageUrl,
           id: product.body._id
         }
       })
@@ -189,6 +209,7 @@ const resolvers = {
             title: result._source.title,
             description: result._source.description,
             dateCreated: result._source.dateCreated,
+            mainImageUrl: result._source.mainImageUrl,
             id: result._id
           }));
         }
@@ -204,8 +225,9 @@ const resolvers = {
         index: 'my-index',
         body: {
           query: {
-            fuzzy: {
-              title: text
+            multi_match: {
+              query: text,
+              fields: ["title", "description"]
             }
           }
         }
@@ -214,6 +236,7 @@ const resolvers = {
           return results.hits.hits.map(result => ({
             title: result._source.title,
             description: result._source.description,
+            mainImageUrl: result._source.mainImageUrl,
             dateCreated: result._source.dateCreated,
             id: result._id
           }));
@@ -233,9 +256,7 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  persistedQueries: {
-    cache: true
-  },
+  persistedQueries: true,
   subscriptions: {
     keepAlive: 1000,
     path: '/api/ws'

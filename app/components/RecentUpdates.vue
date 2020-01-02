@@ -7,6 +7,7 @@
           :date="item.dateCreated | validDate"
           :title="item.title"
           :description="item.description"
+          :thumbnail="item.mainImageUrl"
           category="New Product"
           icon="headset"
           :color="item.title | productColor" >

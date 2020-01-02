@@ -3,5 +3,7 @@ subscription {
     title
     description
     id
+    dateCreated
+    mainImageUrl
   }
 }

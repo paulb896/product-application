@@ -1,5 +1,5 @@
-mutation ($id: String! $title: String $description: String) {
-  updateProduct (id: $id, title:$title, description:$description) {
+mutation ($id: String! $title: String $description: String $mainImageUrl: String $dateCreated: String) {
+  updateProduct (id: $id, title:$title, description:$description, mainImageUrl: $mainImageUrl dateCreated: $dateCreated) {
     success
   }
 }

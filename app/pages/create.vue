@@ -14,6 +14,13 @@
         </div>
       </div>
       <div class="form-row">
+        <label for="mainImageUrl" class="col-sm-2 col-form-label">Image Url</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" v-model="mainImageUrl" id="description" placeholder="Product image url">
+          <img class="card-img-top" :src="mainImageUrl">
+        </div>
+      </div>
+      <div class="form-row mt-2">
         <label for="create" class="col-sm-2"></label>
         <div class="col-sm-3">
           <button id="create" @click="createProduct()" class="btn btn-primary">Create Product</button>
@@ -37,17 +44,19 @@ export default {
   data() {
     return {
       title: "",
-      description: ""
+      description: "",
+      mainImageUrl: "http://i.imgur.com/VxeNZ.jpg"
     };
   },
   methods: {
     createProduct() {
-      const { title, description } = this.$data;
+      const { title, description, mainImageUrl } = this.$data;
       this.$apollo.mutate({
         mutation: createMutation,
         variables: {
           title,
-          description
+          description,
+          mainImageUrl
         }
       });
     }

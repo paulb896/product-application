@@ -1,5 +1,5 @@
-mutation ($title: String $description: String) {
-  addProduct (title: $title description: $description) {
+mutation ($title: String $description: String $mainImageUrl: String) {
+  addProduct (title: $title description: $description mainImageUrl: $mainImageUrl) {
     success
   }
 }

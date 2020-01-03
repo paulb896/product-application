@@ -10,7 +10,6 @@ export default {
     // 'nuxt-buefy'
   ],
   apollo: {
-    // domain: 'localhost:4000',
     clientConfigs: {
       default: '~/apollo/clientConfig.js'
     }

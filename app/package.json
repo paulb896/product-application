@@ -4,6 +4,8 @@
     "@growthbunker/vuetimeline": "0.1.12",
     "@nuxtjs/apollo": "4.0.0-rc19",
     "@nuxtjs/component-cache": "1.1.5",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-link-persisted-queries": "^0.2.2",
     "nuxt": "latest",
     "nuxt-generate-cluster": "2.6.0"
   },

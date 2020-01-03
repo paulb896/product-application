@@ -24,11 +24,11 @@ import recentProducts from "~/apollo/recentProducts.gql";
 
 export default {
   data: () => ({
-    products: []
+    recentProducts: []
   }),
   computed: {
     filteredRecentProducts() {
-      return this.$data.recentProducts.filter(p => p.title);
+      return this.$data.recentProducts ? this.$data.recentProducts.filter(p => p.title) : [];
     }
   },
   filters: {
@@ -60,6 +60,10 @@ export default {
   apollo: {
     recentProducts: {
       query: recentProducts,
+      // TODO: Update once https://github.com/nuxt-community/apollo-module/issues/295 is fixed.
+      pollInterval: process.server ? undefined: 30000,
+      preFetch: true,
+      notifyOnNetworkStatusChange: true,
       subscribeToMore: {
         document: productAdditions,
         updateQuery: (previousResult, { subscriptionData }) => {

@@ -28,7 +28,7 @@ export default {
   }),
   computed: {
     filteredProducts() {
-      return this.$data.products.filter(p => p.title);
+      return this.$data.products ? this.$data.products.filter(p => p.title) : [];
     }
   },
   filters: {

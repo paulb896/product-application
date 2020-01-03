@@ -4,7 +4,7 @@
     <div v-for="item in products" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
-          :date="item.dateCreated | vaildDate"
+          :date="new Date(item.dateCreated)"
           :title="item.title"
           :description="item.description"
           :thumbnail="item.mainImageUrl"
@@ -32,9 +32,6 @@ export default {
     }
   },
   filters: {
-    vaildDate(productDate) {
-      return productDate ? productDate : new Date();
-    },
     makeLink(id) {
       return `/product/${id}`;
     },
@@ -65,7 +62,22 @@ export default {
       products: {
         query: productAdditions,
         result(result) {
-          this.products.unshift(result.data.productCreated);
+          const createdProduct = result.data.productCreated;
+          let productUpdated = false
+
+          for (let i = 0; i < this.products.length; i++) {
+            const product = this.products[i];
+            if (createdProduct.id === product.id) {
+              product.title = createdProduct.title;
+              product.description = createdProduct.description;
+              product.mainImageUrl = createdProduct.mainImageUrl;
+              productUpdated = true;
+            }
+          }
+
+          if (!productUpdated) {
+            this.products.unshift(createdProduct);
+          }
         }
       }
     }

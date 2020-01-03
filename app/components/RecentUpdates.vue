@@ -4,7 +4,7 @@
     <div v-for="item in filteredRecentProducts" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
-          :date="item.dateCreated | validDate"
+          :date="new Date(item.dateCreated)"
           :title="item.title"
           :description="item.description"
           :thumbnail="item.mainImageUrl"
@@ -32,9 +32,6 @@ export default {
     }
   },
   filters: {
-    vaildDate(productDate) {
-      return productDate ? productDate : (new Date()).toISOString();
-    },
     makeLink(id) {
       return `/product/${id}`;
     },

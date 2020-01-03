@@ -8,7 +8,7 @@
       <h2>Product Edit</h2>
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
       <h5 class="card-title">Current Title: {{ product ? product.title : '' }}</h5>
-      <img class="card-img-top" :src="product.mainImageUrl">
+      <img class="card-img-top" :src="product.mainImageUrl" style="max-width: 30rem">
       <p class="card-text">Current Description: {{ product ? product.description : '' }}</p>
       <div class="form-group mb-2">
         <input type="text"  class="form-control" v-model="product.title" id="title" placeholder="A title for the product">

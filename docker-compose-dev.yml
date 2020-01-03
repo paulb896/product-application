@@ -18,6 +18,9 @@ services:
   #   ports:
   #   - "5601:5601"
 
+  redis:
+    image: redis
+
   search_api:
     container_name: search_api
     build:
@@ -27,6 +30,7 @@ services:
       - ./search_api/:/src
     environment:
       - ELASTIC_SEARCH_URL=http://elasticsearch:9200
+      - REDIS_URL=redis://redis:6379
     restart: always
     ports:
       - "4000:4000"
@@ -34,6 +38,7 @@ services:
       "npm run dev"
     depends_on:
       - elasticsearch
+      - redis
 
   nuxt:
     build:

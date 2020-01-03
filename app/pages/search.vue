@@ -4,7 +4,7 @@
     <ul class="list-group">
       <li v-for="item in filteredProducts" :key="item.id" class="border-light list-group-item list-group-item-action">
         <NLink v-bind:to="item.id | makeLink">
-          <img class="card-img-top" :src="item.mainImageUrl">
+          <img class="card-img float-right" :src="item.mainImageUrl" style="max-width: 10rem">
           <div class="card-body">
             <h5 class="card-title">{{ item.title }}</h5>
             <p class="card-text">{{ item.description }}</p>

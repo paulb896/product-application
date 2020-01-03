@@ -5,7 +5,7 @@
       <NLink to="/search">Go to Product Search</NLink>
     </div>
     <div v-else class="card-body">
-      <img class="card-img-top" :src="product.mainImageUrl" v-if="product.mainImageUrl">
+      <img class="card-img-top" style="max-width: 30rem" :src="product.mainImageUrl" v-if="product.mainImageUrl">
       <h5 class="card-title">{{ product ? product.title : '' }}</h5>
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
       <p class="card-text">{{ product ? product.description : '' }}</p>

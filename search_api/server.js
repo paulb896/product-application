@@ -57,39 +57,37 @@ const PRODUCT_CREATED = 'PRODUCT_CREATED'
 const PRODUCT_UPDATED = 'PRODUCT_UPDATED'
 const PRODUCT_REMOVED = 'PRODUCT_REMOVED'
 
-// const updatedProducts = [];
-// const createdProducts = [];
-// const removedProducts = [];
+const redis = require('redis');
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL
+});
 
-// const ONE_MIN = 60 * 1000;
+redisClient.on('error', function (err) {
+  console.log('Redis Error ' + err);
+});
 
-// const lastProductCreation = new Date();
-// const lastProductUpdate = new Date();
-// const lastProductRemoval = new Date();
+const TWENTY_SECONDS = 20 * 1000;
 
-// setInterval(() => {
-//   console.log('sending out all events');
-//   if (((new Date) - lastProductCreation) < ONE_MIN) {
-//     console.log('sending out create events!!!!!!', createdProducts);
-//     createdProducts.forEach(product => {
-//       pubsub.publish(PRODUCT_CREATED, { productCreated: product });
-//     });
-//   }
+setInterval(() => {
+  console.log('sending out all events');
 
-//   if (((new Date) - lastProductUpdate) < ONE_MIN) {
-//     console.log('sending out update events!!!!!!', updatedProducts);
-//     updatedProducts.forEach(product => {
-//       pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
-//     });
-//   }
+  function sendProductEvents(eventName) {
+    redisClient.lrange(eventName, 0, -1, (r, productEvents) => {
+      productEvents.forEach(product => {
+        pubsub.publish(eventName, JSON.parse(product));
+      });
+      redisClient.get(`${eventName}:time`, (err, lastProductEvent) => {
+        if (((new Date()) - new Date(lastProductEvent)) > TWENTY_SECONDS) {
+          redisClient.del(eventName)
+        }
+      })
+    });
+  }
 
-//   if (((new Date) - lastProductRemoval) < 2 * ONE_MIN) {
-//     console.log('sending out removal events!!!!!!', removedProducts);
-//     removedProducts.forEach(product => {
-//       pubsub.publish(PRODUCT_REMOVED, { productRemoved: product });
-//     });
-//   }
-// }, 10000)
+  sendProductEvents(PRODUCT_CREATED);
+  sendProductEvents(PRODUCT_UPDATED);
+  sendProductEvents(PRODUCT_REMOVED);
+}, 10000)
 
 const resolvers = {
   Subscription: {
@@ -116,13 +114,13 @@ const resolvers = {
         }
       }).then(async res => {
         const product = { title, description, id: res.body._id, dateCreated, mainImageUrl };
+        const productAddedEvent = { productCreated: product };
 
-        pubsub.publish(PRODUCT_CREATED, { productCreated: product });
-        // createdProducts.push(product);
-        // if (createdProducts.length > 10) {
-        //   createdProducts.shift();
-        // }
-        // lastProductCreation = new Date();
+        pubsub.publish(PRODUCT_CREATED, productAddedEvent);
+        redisClient.rpush(PRODUCT_CREATED, JSON.stringify(productAddedEvent), () => {
+          redisClient.ltrim(PRODUCT_CREATED, 0, 10);
+          redisClient.set(`${PRODUCT_CREATED}:time`, new Date());
+        });
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -138,12 +136,11 @@ const resolvers = {
         id,
         index: 'my-index',
       }).then(async () => {
-        pubsub.publish(PRODUCT_REMOVED, { productRemoved: { id } });
-        // removedProducts.push( { id } );
-        // if (removedProducts.length > 10) {
-        //   removedProducts.shift();
-        // }
-        // lastProductRemoval = new Date();
+        const productRemovedEvent = { productRemoved: { id } }
+        pubsub.publish(PRODUCT_REMOVED, productRemovedEvent);
+        redisClient.rpush(PRODUCT_REMOVED, JSON.stringify(productRemovedEvent), () => {
+          redisClient.ltrim(PRODUCT_REMOVED, 0, 10)
+        });
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });
@@ -165,13 +162,12 @@ const resolvers = {
         }
       }).then(async res => {
         const product = { title, description, mainImageUrl, dateCreated, id: res.body._id };
+        const productUpdatedEvent = { productUpdated: product };
 
-        pubsub.publish(PRODUCT_UPDATED, { productUpdated: product });
-        // updatedProducts.push(product);
-        // if (updatedProducts.length > 10) {
-        //   updatedProducts.shift();
-        // }
-        // lastProductUpdate = new Date();
+        pubsub.publish(PRODUCT_UPDATED, productUpdatedEvent);
+        redisClient.rpush(PRODUCT_UPDATED, JSON.stringify(productUpdatedEvent), () => {
+          redisClient.ltrim(PRODUCT_UPDATED, 0, 10)
+        });
 
         // TODO: MOVE THIS SOMEWHERE ELSE?
         await client.indices.refresh({ index: 'my-index' });

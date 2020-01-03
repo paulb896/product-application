@@ -59,7 +59,15 @@ export default {
   },
   apollo: {
     recentProducts: {
-      query: recentProducts
+      query: recentProducts,
+      subscribeToMore: {
+        document: productAdditions,
+        updateQuery: (previousResult, { subscriptionData }) => {
+          if (!previousResult.recentProducts.find((p) => p.id === subscriptionData.data.productCreated.id)) {
+            previousResult.recentProducts.unshift(subscriptionData.data.productCreated);
+          }
+        }
+      }
     }
   }
 };

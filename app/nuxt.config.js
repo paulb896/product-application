@@ -4,6 +4,9 @@ export default {
     workerConcurrency: 500,
     concurrency: 500,
   },
+  router: {
+    linkActiveClass: 'active'
+  },
   modules: [
     '@nuxtjs/apollo',
     '@nuxtjs/component-cache',

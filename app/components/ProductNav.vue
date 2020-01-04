@@ -7,9 +7,6 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <NLink to="/" class="nav-link">Home</NLink>
-        </li>
-        <li class="nav-item">
           <NLink class="nav-link" to="/create">Add a Product</NLink>
         </li>
         <li class="nav-item">

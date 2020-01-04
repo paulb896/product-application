@@ -4,7 +4,7 @@
     <div v-for="item in products" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update
-          :date="new Date(item.dateCreated)"
+          :date="item.dateCreated ? new Date(item.dateCreated) : new Date()"
           :title="item.title"
           :description="item.description"
           :thumbnail="item.mainImageUrl"

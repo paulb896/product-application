@@ -17,6 +17,9 @@ export default {
   plugins: [{ src: "~/plugins/vuetimeline.js" }],
   css: ['~/assets/main.css'],
   head:  {
+    htmlAttrs: {
+      lang: 'en-US',
+    },
     meta: [
       { charset: "utf-8"},
       { name: 'viewport', content: "width=device-width, initial-scale=1, shrink-to-fit=no" }

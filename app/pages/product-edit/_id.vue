@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div v-if="!product.id || (product.id && !product.title)" class="card-body">
+    <div v-if="product && !product.id || (product.id && !product.title)" class="card-body">
       <h3>Product Has Been Deleted!</h3>
       <NLink to="/search">Go to Product Search</NLink>
     </div>
@@ -87,6 +87,10 @@ export default {
   apollo: {
     product: {
       query: productQuery,
+      // TODO: Update once https://github.com/nuxt-community/apollo-module/issues/295 is fixed.
+      pollInterval: process.server ? undefined: 20000,
+      preFetch: true,
+      notifyOnNetworkStatusChange: true,
       variables() {
         return {
           id: this.$route.params.id

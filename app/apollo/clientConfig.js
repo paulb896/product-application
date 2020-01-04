@@ -3,10 +3,9 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
 
 export default function () {
-  let link;
-  if (!process.server) {
-    link = createPersistedQueryLink().concat(createHttpLink({ uri: process.env.SERVER_SEARCH_URL, useGETForQueries: true, defaultHttpLink: false }) );
-  }
+  const link = createPersistedQueryLink().concat(
+    createHttpLink({ uri: process.server ? process.env.SERVER_SEARCH_URL : '/graphql', useGETForQueries: true, defaultHttpLink: false })
+  );
 
   return {
     httpEndpoint: process.env.SERVER_SEARCH_URL ? process.env.SERVER_SEARCH_URL : 'http://localhost:4000',

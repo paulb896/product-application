@@ -45,7 +45,7 @@ export default {
     return {
       title: "",
       description: "",
-      mainImageUrl: "http://i.imgur.com/VxeNZ.jpg"
+      mainImageUrl: "https://i.imgur.com/VxeNZ.jpg"
     };
   },
   methods: {

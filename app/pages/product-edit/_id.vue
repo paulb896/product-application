@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div v-if="product && !product.id || (product.id && !product.title)" class="card-body">
+    <div v-if="!product || (product.id && !product.title)" class="card-body">
       <h3>Product Has Been Deleted!</h3>
       <NLink to="/search">Go to Product Search</NLink>
     </div>

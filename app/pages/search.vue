@@ -2,7 +2,7 @@
   <div>
     <input class="form-control form-control-lg" type="search" v-model="searchText" placeholder="Search text" />
     <ul class="list-group">
-      <li v-for="item in filteredProducts" :key="item.id" class="border-light list-group-item list-group-item-action">
+      <li v-for="item in filteredProducts" :key="item.id" class="border list-group-item list-group-item-action">
         <NLink v-bind:to="item.id | makeLink">
           <img class="card-image float-right" :src="item.mainImageUrl" style="max-width: 10rem">
           <div class="card-body">

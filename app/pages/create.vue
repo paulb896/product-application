@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-3 pl-3">
     <div>
       <div class="form-row">
         <label for="title" class="col-sm-2 col-form-label">Product Title</label>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <b>New Products</b>
     <div v-for="item in filteredRecentProducts" :key="item.id">
       <NLink v-bind:to="item.id | makeLink">
         <vue-timeline-update

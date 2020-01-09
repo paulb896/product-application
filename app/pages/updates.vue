@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <div class="product pt-2 pl-3">
     <h2>Live Updates</h2>
     <LiveUpdates />
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ProductNav />
-    <div class="container-fluid ml-3 mt-2">
+    <div class="container-fluid pl-3 pt-2">
       <Nuxt/>
     </div>
   </div>

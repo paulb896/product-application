@@ -1,7 +1,6 @@
 <template>
-  <div class="product pt-2 pl-3">
-    <h2>Recent Updates</h2>
-    <RecentUpdates />
+  <div class="product">
+    <RecentUpdates style="max-width: 35em" />
   </div>
 </template>
 
@@ -11,7 +10,7 @@ import RecentUpdates from '~/components/RecentUpdates'
 export default {
   layout: "product",
   head: {
-    title: "Home page"
+    title: "Recent Product Updates"
   },
   components: {
     RecentUpdates

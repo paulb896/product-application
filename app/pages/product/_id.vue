@@ -10,7 +10,7 @@
       <p class="card-text">Product ID: {{ $route.params.id }}</p>
       <p class="card-text">{{ product ? product.description : '' }}</p>
       <p class="card-text">{{ product ? product.dateCreated : '' }}</p>
-      <NLink v-bind:to="$route.params.id | makeEditLink">Edit Product</NLink>
+      <NLink :to="makeEditLink()">Edit Product</NLink>
     </div>
   </div>
 </template>
@@ -29,9 +29,11 @@ export default {
       mainImageUrl: ""
     }
   }),
-  filters: {
-    makeEditLink(id) {
-      return `/product-edit/${id}`;
+  methods: {
+    makeEditLink() {
+      const id = this.$route.params.id;
+      const queryString = this.$route.query.text ? `?text=${this.$route.query.text}`: '';
+      return `/product-edit/${id}${queryString}`;
     }
   },
   apollo: {

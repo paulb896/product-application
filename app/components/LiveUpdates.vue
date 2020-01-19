@@ -2,7 +2,7 @@
   <div>
     <b>Product Updates</b>
     <div v-for="item in products" :key="item.id">
-      <NLink v-bind:to="item.id | makeLink">
+      <NLink :to="makeProductLink(item.id)">
         <vue-timeline-update
           :date="item.dateCreated ? new Date(item.dateCreated) : new Date()"
           :title="item.title"
@@ -31,10 +31,13 @@ export default {
       return this.$data.products ? this.$data.products.filter(p => p.title) : [];
     }
   },
+  methods: {
+    makeProductLink(id) {
+      const queryString = this.$route.query.text ? `?text=${this.$route.query.text}`: '';
+      return `/product/${id}${queryString}`;
+    }
+  },
   filters: {
-    makeLink(id) {
-      return `/product/${id}`;
-    },
     productColor(title) {
       function getProductColor (charCode) {
         if (charCode >= 97 && charCode < 100) {

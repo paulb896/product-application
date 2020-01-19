@@ -1,19 +1,19 @@
 <template>
   <div>
     <div v-for="item in filteredRecentProducts" :key="item.id">
-      <NLink v-bind:to="item.id | makeLink">
+      <NLink :to="makeProductLink(item.id)">
         <vue-timeline-update
           :date="item.dateCreated ? new Date(item.dateCreated) : new Date()"
           :title="item.title"
           :description="item.description"
           :thumbnail="item.mainImageUrl"
+          :is-last="true"
           category="New Product"
           icon="headset"
           :color="item.title | productColor" >
         </vue-timeline-update>
       </NLink>
     </div>
-
   </div>
 </template>
 
@@ -30,10 +30,13 @@ export default {
       return this.$data.recentProducts ? this.$data.recentProducts.filter(p => p.title) : [];
     }
   },
+  methods: {
+    makeProductLink(id) {
+      const queryString = this.$route.query.text ? `?text=${this.$route.query.text}`: '';
+      return `/product/${id}${queryString}`;
+    }
+  },
   filters: {
-    makeLink(id) {
-      return `/product/${id}`;
-    },
     productColor(title) {
       function getProductColor (charCode) {
         if (charCode >= 97 && charCode < 100) {

@@ -1,6 +1,6 @@
 
 query ($text: String) {
-  search (text:$text) {
+  searchResults:search (text:$text) {
     title
     description
     id

@@ -25,7 +25,7 @@
       </div>
     </div>
     <div v-if="!!product.title" class="card-body">
-      <NLink v-bind:to="$route.params.id | makeLink">Back to Product</NLink>
+      <NLink :to="makeProductLink()">Back to Product</NLink>
     </div>
   </div>
 </template>
@@ -48,12 +48,12 @@ export default {
       dateCreated: ""
     }
   }),
-  filters: {
-    makeLink(id) {
-      return `/product/${id}`;
-    }
-  },
   methods: {
+    makeProductLink() {
+      const id = this.$route.params.id;
+      const queryString = this.$route.query.text ? `?text=${this.$route.query.text}`: '';
+      return `/product/${id}${queryString}`;
+    },
     cancelDelete() {
       this.$data.productRemovalIntent = false;
     },

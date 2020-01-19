@@ -1,7 +1,7 @@
 <template>
-  <div class="pt-2 pl-3 pr-3 col-8">
+  <div class="pt-2 pl-3 pr-3">
     <input
-      class="form-control form-control-lg mb-3 col-6"
+      class="form-control form-control-lg mb-3"
       type="search"
       v-model="searchText"
       placeholder="Product Search Text"
@@ -14,11 +14,11 @@
         class="border list-group-item list-group-item-action mb-1"
       >
         <NLink :to="makeProductLink(item.id)" class="text-secondary d-flex align-self-center">
-          <div class="card-body align-self-center">
+          <div class="card-body align-self-center col-sm">
             <h5 class="card-title">{{ item.title }}</h5>
             <p class="card-text">{{ item.description }}</p>
           </div>
-          <img class="card-image float-right align-self-center" style="max-width: 10em; max-height: 5em" :src="item.mainImageUrl" />
+          <img class="card-image float-right align-self-center col-sm" style="max-width: 10em; max-height: 5em" :src="item.mainImageUrl" />
         </NLink>
       </li>
     </ul>

@@ -45,7 +45,7 @@ export default {
     return {
       title: "",
       description: "",
-      mainImageUrl: "https://i.imgur.com/VxeNZ.jpg"
+      mainImageUrl: "https://cdn.pixabay.com/photo/2015/03/22/18/18/faq-685060_960_720.jpg"
     };
   },
   methods: {

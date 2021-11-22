@@ -15,7 +15,7 @@
     "@elastic/elasticsearch": "7.5.0",
     "apollo-server": "2.9.14",
     "graphql": "14.5.8",
-    "redis": "2.8.0"
+    "redis": "3.1.1"
   },
   "devDependencies": {
     "nodemon": "2.0.2"
